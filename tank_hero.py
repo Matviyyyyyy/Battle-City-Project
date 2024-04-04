@@ -9,10 +9,10 @@ class Tank:
         self.start_y += + self.speed
 
     def move_down(self):
-        self.start_y = self.start_y - self.speed
+        self.start_y -= self.speed
 
     def move_left(self):
-        self.start_x = self.start_x - self.speed
+        self.start_x -=self.speed
 
     def move_right(self):
-        self.start_x = self.start_x + self.speed
+        self.start_x +=self.speed
