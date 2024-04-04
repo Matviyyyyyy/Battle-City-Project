@@ -6,7 +6,7 @@ class Tank:
         self.speed = speed
 
     def move_up(self):
-        self.start_y = self.start_y + self.speed
+        self.start_y += + self.speed
 
     def move_down(self):
         self.start_y = self.start_y - self.speed
