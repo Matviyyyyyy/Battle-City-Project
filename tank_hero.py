@@ -1,18 +1,28 @@
+from pygame import *
+
 class Tank:
-    def __init__(self, start_x, start_y, filename, speed):
-        self.start_x = start_x
-        self.start_y = start_y
-        self.filename = filename
+    def __init__(self, x, y, filename, speed, width, height):
+        self.x = x
+        self.y = y
         self.speed = speed
+        self.filename = filename
+        self.image = transform.scale(image.load(filename), (width, height))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+
+    def draw(self, window):
+        window.blit(self.image, (self.rect.x, self.rect.y))
 
     def move_up(self):
-        self.start_y += self.speed
+        self.y += self.speed
 
     def move_down(self):
-        self.start_y -= self.speed
+        self.y -= self.speed
 
     def move_left(self):
-        self.start_x -=self.speed
+        self.x -=self.speed
 
     def move_right(self):
-        self.start_x +=self.speed
+        self.x +=self.speed
