@@ -28,14 +28,15 @@ background = transform.scale(image.load("background.jfif"), (600, 600))
 
 while running:
     # обробка подій
-    for e in event.get():
+    for e in event.get():d
         if e.type == QUIT:
             run = False
 
     tank_hero.update()
 
     screen.blit(background, (0, 0))
-    tank_hero.draw(background)
+    tank_hero.draw(screen)
+
     display.update()
     clock.tick(60)
 
