@@ -6,10 +6,10 @@ class Tank:
         self.y = y
         self.speed = speed
         self.filename = filename
-        self.image = transform.scale(image.load(filename), (width, height))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        #self.image = transform.scale(image.load(filename), (width, height))
+        #self.rect = self.image.get_rect()
+        #self.rect.x = x
+        #self.rect.y = y
 
 
     def draw(self, window):
