@@ -22,7 +22,7 @@ def showEndWindow(window):
 
 running = True
 
-tank_hero  = Tank(100, 100, 'tank_hero_2.png', 10, 50, 50)
+tank_hero  = Tank(100, 100, 'tank_hero_2.png', 3, 50, 50)
 
 background = transform.scale(image.load("background.jfif"), (600, 600))
 
