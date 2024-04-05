@@ -19,7 +19,9 @@ def showEndWindow(window, message):
 
 running = True
 
-tank_hero  = Tank(100, 100, 'tank_hero.png', )
+tank_hero = Tank(100, 100, 'tank_hero.png', 10, 50, 50)
+
+background = transform.scale(image.load("background.jfif"), (600, 600))
 
 while running:
     # обробка подій
@@ -27,7 +29,10 @@ while running:
         if e.type == QUIT:
             run = False
 
+    tank_hero.update()
 
+    screen.blit(background, (0, 0))
+    tank_hero.draw(screen)
     display.update()
     clock.tick(60)
 

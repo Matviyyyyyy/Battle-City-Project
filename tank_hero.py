@@ -15,14 +15,13 @@ class Tank:
     def draw(self, window):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
-    def move_up(self):
-        self.y += self.speed
-
-    def move_down(self):
-        self.y -= self.speed
-
-    def move_left(self):
-        self.x -=self.speed
-
-    def move_right(self):
-        self.x +=self.speed
+    def update(self):
+        keys = key.get_pressed()
+        if keys[K_a]:
+            self.rect.x -= self.speed
+        if keys[K_d]:
+            self.rect.x += self.speed
+        if keys[K_w]:
+            self.rect.y -= self.speed
+        if keys[K_s]:
+            self.rect.y += self.speed
