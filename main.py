@@ -1,4 +1,5 @@
 from pygame import *
+from tank_hero import Tank
 
 init()
 screen = display.set_mode((600, 600))
@@ -17,6 +18,8 @@ def showEndWindow(window, message):
         clock.tick(60)
 
 running = True
+
+tank_hero  = Tank(100, 100, 'tank_hero.png', )
 
 while running:
     # обробка подій
