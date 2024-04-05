@@ -1,5 +1,5 @@
 from pygame import *
-class Bush:
+class BrickWall:
     def __init__(self, x, y, filename, width, height):
         self.x = x
         self.y = y
@@ -12,4 +12,3 @@ class Bush:
 
     def draw(self, window):
         window.blit(self.image, (self.rect.x, self.rect.y))
-
