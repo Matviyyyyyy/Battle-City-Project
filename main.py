@@ -28,7 +28,7 @@ background = transform.scale(image.load("background.jfif"), (600, 600))
 
 while running:
     # обробка подій
-    for e in event.get():d
+    for e in event.get():
         if e.type == QUIT:
             run = False
 
