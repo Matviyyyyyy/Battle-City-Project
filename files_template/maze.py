@@ -109,6 +109,8 @@ while run:
         if e.type == QUIT:
             run = False
 
+
+
     # оновлення обєктів
     hero.update()
     enemy.update()
