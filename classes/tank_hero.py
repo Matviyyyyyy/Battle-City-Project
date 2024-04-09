@@ -11,12 +11,13 @@ class Tank:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.bullets = []
 
-        
     def draw(self, window):
-        rotated_tank = transform.rotate(self.image, self.angle)
-        window.blit(rotated_tank, (self.rect.x, self.rect.y))
-
+        rotated_bullet = transform.rotate(self.image, self.angle)
+        window.blit(rotated_bullet, (self.rect.x, self.rect.y))
+        for bullet in self.bullets:
+            bullet.draw(window)
 
     def update(self, keys):
         if keys[K_a]:
@@ -31,3 +32,7 @@ class Tank:
         if keys[K_s]:
             self.rect.y += self.speed
             self.angle = 180
+
+
+
+
