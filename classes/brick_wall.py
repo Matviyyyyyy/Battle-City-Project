@@ -8,7 +8,13 @@ class BrickWall:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.num_hits = 0
 
 
     def draw(self, window):
         window.blit(self.image, (self.rect.x, self.rect.y))
+    
+    def hit(self):
+        self.num_hits += 1
+    
+    

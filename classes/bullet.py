@@ -20,6 +20,18 @@ class Bullet:
             self.rect.y += self.speed
         if self.angle == 0:
             self.rect.x += self.speed
+        if self.angle == 45:
+            self.rect.y -= self.speed
+            self.rect.x += self.speed
+        if self.angle == 135:
+            self.rect.x -= self.speed
+            self.rect.y -= self.speed
+        if self.angle == 315:
+            self.rect.y += self.speed
+            self.rect.x += self.speed
+        if self.angle == 225:
+            self.rect.x -= self.speed
+            self.rect.y += self.speed
 
 
 

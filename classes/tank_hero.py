@@ -13,25 +13,49 @@ class Tank:
         self.rect.y = y
         self.bullets = []
 
+
     def draw(self, window):
         rotated_tank = transform.rotate(self.image, self.angle)
         window.blit(rotated_tank, (self.rect.x, self.rect.y))
         for bullet in self.bullets:
             bullet.draw(window)
 
+
     def update(self, keys):
-        if keys[K_a]:
+        if keys[K_a] and not keys[K_w] and not keys[K_s]:
             self.rect.x -= self.speed
             self.angle = 90
-        if keys[K_d]:
+        if keys[K_d] and not keys[K_w] and not keys[K_s]:
             self.rect.x += self.speed
             self.angle = 270
-        if keys[K_w]:
+        if keys[K_w] and not keys[K_a] and not keys[K_d]:
             self.rect.y -= self.speed
             self.angle = 0
-        if keys[K_s]:
+        if keys[K_s] and not keys[K_a] and not keys[K_d]:
             self.rect.y += self.speed
             self.angle = 180
+        if keys[K_a] and keys[K_w]:
+            self.rect.x -= self.speed
+            self.rect.y -= self.speed
+            self.angle = 45
+        if keys[K_a] and keys[K_s]:
+            self.rect.x -= self.speed
+            self.rect.y += self.speed
+            self.angle = 135
+        if keys[K_d] and keys[K_w]:
+            self.rect.x += self.speed
+            self.rect.y -= self.speed
+            self.angle = 315
+        if keys[K_d] and keys[K_s]:
+            self.rect.x += self.speed
+            self.rect.y += self.speed
+            self.angle = 225
+
+    
+    def dest(self, bullet):
+        self.bullets.remove(bullet)
+
+        
 
 
 

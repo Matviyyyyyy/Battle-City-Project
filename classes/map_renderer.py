@@ -36,3 +36,9 @@ class MapRenderer:
                 self.current_y += self.block_size
                 self.current_x = 0
 
+    def destruction(self, obj):
+        if isinstance(obj, BrickWall):
+            if obj.num_hits >= 3:
+                self.blocks.remove(obj)
+
+

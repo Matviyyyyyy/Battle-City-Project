@@ -45,21 +45,19 @@ while running:
             run = False
         if e.type == KEYDOWN:
             if e.key == K_SPACE:
-                if tank_hero.angle == 0:
-                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 90))
-                if tank_hero.angle == 90:
-                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 180))
-                if tank_hero.angle == 180:
-                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 270))
-                if tank_hero.angle == 270:
-                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 0))
+                if tank_hero.angle == 315:
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, 45))
+                elif tank_hero.angle == 270:
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, 0))
+                else: 
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero.angle + 90))
 
 
     tank_hero.update(keys)  # викликання методу руху танка
 
     # подія зіткнення зі стінами
     for block in map_renderer.blocks:
-        if tank_hero.rect.colliderect(block.rect):
+        if tank_hero.rect.colliderect(block.rect) and not isinstance(block, Bush):
             if keys[K_a]:
                 if tank_hero.rect.left > block.rect.left:  # Перевіряємо, чи герой не зіткнеться зліва
                     tank_hero.rect.left = block.rect.right  # Зміщуємо героя праворуч від стінки
@@ -81,6 +79,16 @@ while running:
                     tank_hero.speed = 0  # Зупиняємо рух героя
         else:
             tank_hero.speed = 5  # Якщо немає зіткнення, продовжуємо рух з нормальною швидкістю
+
+        for bullet in tank_hero.bullets:
+            if bullet.rect.colliderect(block.rect) and not isinstance(block, Bush):
+                if isinstance(block, BrickWall):
+                    block.hit()
+                    tank_hero.dest(bullet)
+        
+        if isinstance(block, BrickWall):
+            map_renderer.destruction(block)
+
 
     # Перевіряємо, чи виходить танк за межі поля
     if tank_hero.rect.left < 0:
