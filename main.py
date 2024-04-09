@@ -45,7 +45,15 @@ while running:
             run = False
         if e.type == KEYDOWN:
             if e.key == K_SPACE:
-                tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 0))
+                if tank_hero.angle == 0:
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 90))
+                if tank_hero.angle == 90:
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 180))
+                if tank_hero.angle == 180:
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 270))
+                if tank_hero.angle == 270:
+                    tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 0))
+
 
     tank_hero.update(keys)  # викликання методу руху танка
 

@@ -33,9 +33,6 @@ class Tank:
             self.rect.y += self.speed
             self.angle = 180
 
-        for bullet in self.bullets:
-            bullet.angle = self.angle + 90
-
 
 
 
