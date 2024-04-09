@@ -45,13 +45,7 @@ while running:
             run = False
         if e.type == KEYDOWN:
             if e.key == K_SPACE:
-                tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30))
-
-
-
-
-
-
+                tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 30, 30, 0))
 
     tank_hero.update(keys)  # викликання методу руху танка
 
@@ -101,7 +95,6 @@ while running:
         block.draw(screen)
     for bullet in tank_hero.bullets:
         bullet.update()
-
     display.update()  # оновлення екрану
     clock.tick(60)  # фпс
 
