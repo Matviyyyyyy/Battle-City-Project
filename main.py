@@ -85,6 +85,10 @@ while running:
                 if isinstance(block, BrickWall):
                     block.hit()
                     tank_hero.dest(bullet)
+                    
+                if isinstance(block, IronWall):
+                    tank_hero.dest(bullet)
+
         
         if isinstance(block, BrickWall):
             map_renderer.destruction(block)
