@@ -5,6 +5,7 @@ from classes.iron_wall import IronWall
 from classes.bush import Bush
 from classes.bullet import Bullet
 from classes.map_renderer import MapRenderer
+from classes.enemy import Enemy
 
 init()
 screen = display.set_mode((600, 600))
@@ -26,6 +27,8 @@ def showEndWindow(window):
 
 # створення героя
 tank_hero = Tank(150, 100, 'images/tank_hero.png', 3, 50, 50, 0)
+
+enemy_tank = Enemy(200, 400, "images/enemy.gif", 3, 50, 50, 270)
 
 map_renderer = MapRenderer("files_template/map.txt", 50)
 map_renderer.draw_map()
@@ -54,6 +57,7 @@ while running:
 
 
     tank_hero.update(keys)  # викликання методу руху танка
+    enemy_tank.update()
 
     # подія зіткнення зі стінами
     for block in map_renderer.blocks:
@@ -110,9 +114,12 @@ while running:
 
     # промальовка об'єктів
     screen.blit(background, (0, 0))  # задній фон
+    enemy_tank.draw(screen)
     tank_hero.draw(screen)  # танк
     for block in map_renderer.blocks:  # стіни
         block.draw(screen)
+    for bullet in tank_hero.bullets:
+        bullet.update()
     for bullet in tank_hero.bullets:
         bullet.update()
     display.update()  # оновлення екрану
