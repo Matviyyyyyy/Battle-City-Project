@@ -59,6 +59,9 @@ while running:
     tank_hero.update(keys)  # викликання методу руху танка
     enemy_tank.update()
 
+
+
+
     # подія зіткнення зі стінами
     for block in map_renderer.blocks:
         if tank_hero.rect.colliderect(block.rect) and not isinstance(block, Bush):
@@ -97,6 +100,9 @@ while running:
         if isinstance(block, BrickWall):
             map_renderer.destruction(block)
 
+        if enemy_tank.rect.x - 400 < tank_hero.rect.x < enemy_tank.rect.x + 400 and enemy_tank.rect.y - 50 < tank_hero.rect.y < enemy_tank.rect.y + 50 and block.x or enemy_tank.rect.x - 50 < tank_hero.rect.x < enemy_tank.rect.x + 50 and enemy_tank.rect.y - 400 < tank_hero.rect.y < enemy_tank.rect.y + 400:
+            enemy_tank.angle = 180
+
 
     # Перевіряємо, чи виходить танк за межі поля
     if tank_hero.rect.left < 0:
@@ -118,8 +124,6 @@ while running:
     tank_hero.draw(screen)  # танк
     for block in map_renderer.blocks:  # стіни
         block.draw(screen)
-    for bullet in tank_hero.bullets:
-        bullet.update()
     for bullet in tank_hero.bullets:
         bullet.update()
     display.update()  # оновлення екрану
