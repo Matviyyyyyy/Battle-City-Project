@@ -24,31 +24,31 @@ class Tank:
 
 
     def update(self, keys):
-        if keys[K_a] and not keys[K_w] and not keys[K_s]:
+        if keys[K_LEFT] and not keys[K_UP] and not keys[K_DOWN]:
             self.rect.x -= self.speed
             self.angle = 90
-        if keys[K_d] and not keys[K_w] and not keys[K_s]:
+        if keys[K_RIGHT] and not keys[K_UP] and not keys[K_DOWN]:
             self.rect.x += self.speed
             self.angle = 270
-        if keys[K_w] and not keys[K_a] and not keys[K_d]:
+        if keys[K_UP] and not keys[K_LEFT] and not keys[K_RIGHT]:
             self.rect.y -= self.speed
             self.angle = 0
-        if keys[K_s] and not keys[K_a] and not keys[K_d]:
+        if keys[K_DOWN] and not keys[K_LEFT] and not keys[K_RIGHT]:
             self.rect.y += self.speed
             self.angle = 180
-        if keys[K_a] and keys[K_w]:
+        if keys[K_LEFT] and keys[K_UP]:
             self.rect.x -= self.speed
             self.rect.y -= self.speed
             self.angle = 45
-        if keys[K_a] and keys[K_s]:
+        if keys[K_LEFT] and keys[K_DOWN]:
             self.rect.x -= self.speed
             self.rect.y += self.speed
             self.angle = 135
-        if keys[K_d] and keys[K_w]:
+        if keys[K_RIGHT] and keys[K_UP]:
             self.rect.x += self.speed
             self.rect.y -= self.speed
             self.angle = 315
-        if keys[K_d] and keys[K_s]:
+        if keys[K_RIGHT] and keys[K_DOWN]:
             self.rect.x += self.speed
             self.rect.y += self.speed
             self.angle = 225
