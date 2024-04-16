@@ -156,7 +156,7 @@ def game(level, settings):
             if isinstance(block, BrickWall):
                 map_renderer.destruction(block)
 
-            if enemy_tank.rect.x - 400 < tank_hero.rect.x < enemy_tank.rect.x + 400 and enemy_tank.rect.y - 50 < tank_hero.rect.y < enemy_tank.rect.y + 50 and block.x or enemy_tank.rect.x - 50 < tank_hero.rect.x < enemy_tank.rect.x + 50 and enemy_tank.rect.y - 400 < tank_hero.rect.y < enemy_tank.rect.y + 400:
+            if enemy_tank.rect.x - 400 < tank_hero.rect.x < enemy_tank.rect.x + 400 and enemy_tank.rect.y - 50 < tank_hero.rect.y < enemy_tank.rect.y + 50 or enemy_tank.rect.x - 50 < tank_hero.rect.x < enemy_tank.rect.x + 50 and enemy_tank.rect.y - 400 < tank_hero.rect.y < enemy_tank.rect.y + 400:
                 enemy_tank.angle = 180
 
 
