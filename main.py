@@ -48,6 +48,8 @@ def game(level, settings):
     # створення заднього фону
     background = transform.scale(image.load("images/background.jfif"), (Width, Height))
 
+    last_time = time.get_ticks()
+    time_interval = 3000
 
     running = True
     while running:
@@ -58,7 +60,6 @@ def game(level, settings):
         for e in event.get():  # оформлення виходу з гри
             if e.type == QUIT:
                 run = False
-                
             if e.type == KEYDOWN:
                 if e.key == K_SPACE:
                     if tank_hero.angle == 315:
@@ -157,7 +158,13 @@ def game(level, settings):
                 map_renderer.destruction(block)
 
             if enemy_tank.rect.x - 400 < tank_hero.rect.x < enemy_tank.rect.x + 400 and enemy_tank.rect.y - 50 < tank_hero.rect.y < enemy_tank.rect.y + 50 or enemy_tank.rect.x - 50 < tank_hero.rect.x < enemy_tank.rect.x + 50 and enemy_tank.rect.y - 400 < tank_hero.rect.y < enemy_tank.rect.y + 400:
-                enemy_tank.angle = 180
+                current_time = time.get_ticks()
+                if current_time - last_time >= time_interval:
+                    if enemy_tank.angle == 90:
+                        enemy_tank.bullets.append(Bullet(enemy_tank.rect.x, enemy_tank.rect.y, "images/bullet.webp", 7, 15, 15, 180))
+                    if enemy_tank.angle == 270:
+                        enemy_tank.bullets.append(Bullet(enemy_tank.rect.x, enemy_tank.rect.y, "images/bullet.webp", 7, 15, 15, 0))
+                    last_time = current_time
 
 
         # Перевіряємо, чи виходить танк за межі поля
@@ -214,6 +221,9 @@ def game(level, settings):
         if settings.num_players == 2:
             for bullet in tank_hero2.bullets:
                 bullet.update()
+
+        for bullet in  enemy_tank.bullets:
+            bullet.update()
         display.update()  # оновлення екрану
         clock.tick(60)  # фпс
 
