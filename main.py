@@ -7,12 +7,12 @@ from classes.bullet import Bullet
 from classes.map_renderer import MapRenderer
 from classes.enemy import Enemy
 
-
+Width, Height = 800, 600
 
 def game(level, settings):  
 
     init()
-    screen = display.set_mode((600, 600))
+    screen = display.set_mode((Width, Height))
     display.set_caption("Battle City")
     clock = time.Clock()
 
@@ -46,7 +46,7 @@ def game(level, settings):
     map_renderer.draw_map()
 
     # створення заднього фону
-    background = transform.scale(image.load("images/background.jfif"), (600, 600))
+    background = transform.scale(image.load("images/background.jfif"), (Width, Height))
 
 
     running = True
@@ -67,6 +67,7 @@ def game(level, settings):
                         tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, 0))
                     else: 
                         tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero.angle + 90))
+
                 if e.key == K_RSHIFT and settings.num_players == 2:
                     if tank_hero2.angle == 315:
                         tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, 45))
@@ -75,12 +76,11 @@ def game(level, settings):
                     else: 
                         tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero2.angle + 90))
                         
-        keys_tank1 = key.get_pressed()
-        tank_hero.update(keys_tank1) # Оновлення руху першого танка
+        
+        tank_hero.update(key.get_pressed()) 
 
         if settings.num_players == 2:
-            keys_tank2 = key.get_pressed()
-            tank_hero2.update(keys_tank2) # Оновлення руху другого танка
+            tank_hero2.update2(key.get_pressed())
 
         enemy_tank.update()
                 
@@ -164,32 +164,43 @@ def game(level, settings):
         if tank_hero.rect.left < 0:
             tank_hero.rect.left = 0
             tank_hero.speed = 0
-        if tank_hero.rect.right > 600:
-            tank_hero.rect.right = 600
+        if tank_hero.rect.right > Width:
+            tank_hero.rect.right = Width
             tank_hero.speed = 0
         if tank_hero.rect.top < 0:
             tank_hero.rect.top = 0
             tank_hero.speed = 0
-        if tank_hero.rect.bottom > 600:
-            tank_hero.rect.bottom = 600
+        if tank_hero.rect.bottom > Height:
+            tank_hero.rect.bottom = Height
             tank_hero.speed = 0
         if tank_hero.armor <= 0:
             pass
         if settings.num_players == 2:            
-            if tank_hero.rect.left < 0:
-                tank_hero.rect.left = 0
-                tank_hero.speed = 0
-            if tank_hero.rect.right > 600:
-                tank_hero.rect.right = 600
-                tank_hero.speed = 0
-            if tank_hero.rect.top < 0:
-                tank_hero.rect.top = 0
-                tank_hero.speed = 0
-            if tank_hero.rect.bottom > 600:
-                tank_hero.rect.bottom = 600
-                tank_hero.speed = 0
-            if tank_hero.armor <= 0:
+            if tank_hero2.rect.left < 0:
+                tank_hero2.rect.left = 0
+                tank_hero2.speed = 0
+            if tank_hero2.rect.right > Width:
+                tank_hero2.rect.right = Width
+                tank_hero2.speed = 0
+            if tank_hero2.rect.top < 0:
+                tank_hero2.rect.top = 0
+                tank_hero2.speed = 0
+            if tank_hero2.rect.bottom > Height:
+                tank_hero2.rect.bottom = Height
+                tank_hero2.speed = 0
+            if tank_hero2.armor <= 0:
                 pass
+
+        for bullet in tank_hero.bullets:
+            if bullet.rect.right < 0 or bullet.rect.bottom < 0 or bullet.rect.left > Width or bullet.rect.bottom > Height:
+                tank_hero.dest(bullet)
+        
+        if settings.num_players == 2:
+            for bullet in tank_hero2.bullets:
+                if bullet.rect.right < 0 or bullet.rect.bottom < 0 or bullet.rect.left > Width or bullet.rect.bottom > Height:
+                    tank_hero2.dest(bullet)
+        
+
         # промальовка об'єктів
         screen.blit(background, (0, 0))  # задній фон
         enemy_tank.draw(screen)
