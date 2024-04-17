@@ -6,6 +6,7 @@ from classes.bush import Bush
 from classes.bullet import Bullet
 from classes.map_renderer import MapRenderer
 from classes.enemy import Enemy
+from classes.boosts import Boost
 
 Width, Height = 800, 600
 
@@ -17,28 +18,36 @@ def game(level, settings):
     clock = time.Clock()
 
 
-    def showEndWindow(window):
+    def showEndWindow(window, message):
         clock = time.Clock()
         run = True
+        font.init()
+        text = font.Font(None, 70).render(message, True, (255, 255, 255))
         while run:
-            # обробка подій 
+            # обробка подій
             for e in event.get():
                 if e.type == QUIT:
                     run = False
+
+            window.blit(text, (250, 250))
             display.update()
             clock.tick(60)
 
 
     # створення героя
     if settings.tank1 == 1:
-        tank_hero = Tank(150, 100, 'images/tank_hero.png', 2, 50, 50, 0, 10, 1)
+        tank_hero = Tank(150, 100, 'images/tank_hero.png', 2, 50, 50, 0, 10, 3)
     
     if settings.num_players == 2:
         if settings.tank2 == 1:
-            tank_hero2 = Tank(250, 100, 'images/tank_hero.png', 2, 50, 50, 0, 10, 1)
+            tank_hero2 = Tank(250, 100, 'images/tank_hero.png', 2, 50, 50, 0, 10, 3)
 
 
-    enemy_tank = Enemy(200, 400, "images/enemy.gif", 3, 50, 50, 270)
+    enemy_tank = Enemy(200, 400, "images/enemy.gif", 3, 50, 50, 270, 3)
+
+    boost_speed_1 = Boost(500, 500, "images/boost_speed.webp", 25, 30)
+
+
     if level == 1:
         map_renderer = MapRenderer("files_template/map1.txt", 50)
     elif level == 2:
@@ -62,12 +71,14 @@ def game(level, settings):
                 run = False
             if e.type == KEYDOWN:
                 if e.key == K_SPACE:
+                    tank_hero.num_bullets -= 1
                     if tank_hero.angle == 315:
                         tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, 45))
                     elif tank_hero.angle == 270:
                         tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, 0))
                     else: 
                         tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero.angle + 90))
+
 
                 if e.key == K_RSHIFT and settings.num_players == 2:
                     if tank_hero2.angle == 315:
@@ -76,7 +87,7 @@ def game(level, settings):
                         tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, 0))
                     else: 
                         tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero2.angle + 90))
-                        
+
         
         tank_hero.update(key.get_pressed()) 
 
@@ -84,7 +95,15 @@ def game(level, settings):
             tank_hero2.update2(key.get_pressed())
 
         enemy_tank.update()
-                
+
+
+        if tank_hero.rect.colliderect(boost_speed_1.rect):
+            boost_speed_1.rect.x = -2000
+            boost_speed_1.rect.y = -2000
+            tank_hero.speed = 7
+
+
+
 
         # подія зіткнення зі стінами
         for block in map_renderer.blocks:
@@ -180,8 +199,10 @@ def game(level, settings):
         if tank_hero.rect.bottom > Height:
             tank_hero.rect.bottom = Height
             tank_hero.speed = 0
-        if tank_hero.armor <= 0:
-            pass
+
+
+
+
         if settings.num_players == 2:            
             if tank_hero2.rect.left < 0:
                 tank_hero2.rect.left = 0
@@ -201,17 +222,33 @@ def game(level, settings):
         for bullet in tank_hero.bullets:
             if bullet.rect.right < 0 or bullet.rect.bottom < 0 or bullet.rect.left > Width or bullet.rect.bottom > Height:
                 tank_hero.dest(bullet)
+            if bullet.rect.colliderect(enemy_tank.rect):
+                enemy_tank.armor -= 1
+                tank_hero.dest(bullet)
+            if enemy_tank.armor == 0:
+                enemy_tank.rect.x = 2000
+                enemy_tank.rect.y = 2000
+
         
         if settings.num_players == 2:
             for bullet in tank_hero2.bullets:
                 if bullet.rect.right < 0 or bullet.rect.bottom < 0 or bullet.rect.left > Width or bullet.rect.bottom > Height:
                     tank_hero2.dest(bullet)
+
+        for bullet in enemy_tank.bullets:
+            if bullet.rect.colliderect(tank_hero.rect):
+                enemy_tank.dest(bullet)
+                tank_hero.armor -= 1
+            if tank_hero.armor == 0:
+                showEndWindow(screen, "Ти програв!")
+
         
 
         # промальовка об'єктів
         screen.blit(background, (0, 0))  # задній фон
         enemy_tank.draw(screen)
         tank_hero.draw(screen)  # танк
+        boost_speed_1.draw(screen)
         if settings.num_players == 2:
             tank_hero2.draw(screen)
         for block in map_renderer.blocks:  # стіни

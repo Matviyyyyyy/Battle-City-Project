@@ -1,7 +1,7 @@
 from pygame import *
 
-class Enemy:
-    def __init__(self, x, y, filename, speed, width, height, angle):
+class Enemy():
+    def __init__(self, x, y, filename, speed, width, height, angle, armor):
         self.x = x
         self.y = y
         self.speed = speed
@@ -12,6 +12,7 @@ class Enemy:
         self.rect.x = x
         self.rect.y = y
         self.bullets = []
+        self.armor = armor
 
     def draw(self, window):
         rotated_enemy = transform.rotate(self.image, self.angle)
@@ -27,3 +28,6 @@ class Enemy:
         if self.rect.x <= 200:
             self.speed = self.speed * (-1)
             self.angle = 270
+
+    def dest(self, bullet):
+        self.bullets.remove(bullet)

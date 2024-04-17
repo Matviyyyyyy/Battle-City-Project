@@ -1,7 +1,7 @@
 from pygame import *
 
 class Tank:
-    def __init__(self, x, y, filename, speed, width, height, angle, num_shells, armor):
+    def __init__(self, x, y, filename, speed, width, height, angle, num_bullets, armor):
         self.x = x
         self.y = y
         self.speed = speed
@@ -11,9 +11,10 @@ class Tank:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.num_shells = num_shells
+        self.num_bullets = num_bullets
         self.armor = armor
         self.bullets = []
+
 
 
     def draw(self, window):
