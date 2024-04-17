@@ -35,12 +35,9 @@ def game(level, settings):
 
 
     # створення героя
-    if settings.tank1 == 1:
+    if settings[0] == 1:
         tank_hero = Tank(150, 100, 'images/tank_hero.png', 2, 50, 50, 0, 10, 3)
     
-    if settings.num_players == 2:
-        if settings.tank2 == 1:
-            tank_hero2 = Tank(250, 100, 'images/tank_hero.png', 2, 50, 50, 0, 10, 3)
 
 
     enemy_tank = Enemy(200, 400, "images/enemy.gif", 3, 50, 50, 270, 3)
@@ -79,20 +76,8 @@ def game(level, settings):
                     else: 
                         tank_hero.bullets.append(Bullet(tank_hero.rect.x, tank_hero.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero.angle + 90))
 
-
-                if e.key == K_RSHIFT and settings.num_players == 2:
-                    if tank_hero2.angle == 315:
-                        tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, 45))
-                    elif tank_hero2.angle == 270:
-                        tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, 0))
-                    else: 
-                        tank_hero2.bullets.append(Bullet(tank_hero2.rect.x, tank_hero2.rect.y, "images/bullet.webp", 7, 15, 15, tank_hero2.angle + 90))
-
         
         tank_hero.update(key.get_pressed()) 
-
-        if settings.num_players == 2:
-            tank_hero2.update2(key.get_pressed())
 
         enemy_tank.update()
 
@@ -100,7 +85,7 @@ def game(level, settings):
         if tank_hero.rect.colliderect(boost_speed_1.rect):
             boost_speed_1.rect.x = -2000
             boost_speed_1.rect.y = -2000
-            tank_hero.speed = 7
+            settings[1] = 2 * tank_hero.speed
 
 
 
@@ -128,7 +113,7 @@ def game(level, settings):
                         tank_hero.rect.bottom = block.rect.top  # Зміщуємо героя вверх від стінки
                         tank_hero.speed = 0  # Зупиняємо рух героя
             else:
-                tank_hero.speed = 2  # Якщо немає зіткнення, продовжуємо рух з нормальною швидкістю
+                tank_hero.speed = settings[1]  # Якщо немає зіткнення, продовжуємо рух з нормальною швидкістю
 
             for bullet in tank_hero.bullets:
                     if bullet.rect.colliderect(block.rect) and not isinstance(block, Bush):
@@ -138,39 +123,6 @@ def game(level, settings):
 
                         if isinstance(block, IronWall):
                             tank_hero.dest(bullet)
-
-            if settings.num_players == 2:
-                if tank_hero2.rect.colliderect(block.rect) and not isinstance(block, Bush):
-                    if keys[K_LEFT]:
-                        if tank_hero2.rect.left > block.rect.left:
-                            tank_hero2.rect.left = block.rect.right
-                            tank_hero2.speed = 0
-
-                    if keys[K_RIGHT]:
-                        if tank_hero2.rect.right < block.rect.right:
-                            tank_hero2.rect.right = block.rect.left
-                            tank_hero2.speed = 0
-
-                    if keys[K_UP]:
-                        if tank_hero2.rect.top > block.rect.top:
-                            tank_hero2.rect.top = block.rect.bottom
-                            tank_hero2.speed = 0
-
-                    if keys[K_DOWN]:
-                        if tank_hero2.rect.bottom < block.rect.bottom:
-                            tank_hero2.rect.bottom = block.rect.top
-                            tank_hero2.speed = 0
-                else:
-                    tank_hero2.speed = 2  # Якщо немає зіткнення, продовжуємо рух з нормальною швидкістю
-            
-                for bullet in tank_hero2.bullets:
-                    if bullet.rect.colliderect(block.rect) and not isinstance(block, Bush):
-                        if isinstance(block, BrickWall):
-                            block.hit()
-                            tank_hero2.dest(bullet)
-                    
-                        if isinstance(block, IronWall):
-                            tank_hero2.dest(bullet)
 
         
             if isinstance(block, BrickWall):
@@ -202,23 +154,6 @@ def game(level, settings):
 
 
 
-
-        if settings.num_players == 2:            
-            if tank_hero2.rect.left < 0:
-                tank_hero2.rect.left = 0
-                tank_hero2.speed = 0
-            if tank_hero2.rect.right > Width:
-                tank_hero2.rect.right = Width
-                tank_hero2.speed = 0
-            if tank_hero2.rect.top < 0:
-                tank_hero2.rect.top = 0
-                tank_hero2.speed = 0
-            if tank_hero2.rect.bottom > Height:
-                tank_hero2.rect.bottom = Height
-                tank_hero2.speed = 0
-            if tank_hero2.armor <= 0:
-                pass
-
         for bullet in tank_hero.bullets:
             if bullet.rect.right < 0 or bullet.rect.bottom < 0 or bullet.rect.left > Width or bullet.rect.bottom > Height:
                 tank_hero.dest(bullet)
@@ -229,17 +164,13 @@ def game(level, settings):
                 enemy_tank.rect.x = 2000
                 enemy_tank.rect.y = 2000
 
-        
-        if settings.num_players == 2:
-            for bullet in tank_hero2.bullets:
-                if bullet.rect.right < 0 or bullet.rect.bottom < 0 or bullet.rect.left > Width or bullet.rect.bottom > Height:
-                    tank_hero2.dest(bullet)
 
         for bullet in enemy_tank.bullets:
             if bullet.rect.colliderect(tank_hero.rect):
                 enemy_tank.dest(bullet)
                 tank_hero.armor -= 1
             if tank_hero.armor == 0:
+                return False
                 showEndWindow(screen, "Ти програв!")
 
         
@@ -248,17 +179,11 @@ def game(level, settings):
         screen.blit(background, (0, 0))  # задній фон
         enemy_tank.draw(screen)
         tank_hero.draw(screen)  # танк
-        boost_speed_1.draw(screen)
-        if settings.num_players == 2:
-            tank_hero2.draw(screen)
+        boost_speed_1.draw(screen)     
         for block in map_renderer.blocks:  # стіни
             block.draw(screen)
         for bullet in tank_hero.bullets:
             bullet.update()
-        if settings.num_players == 2:
-            for bullet in tank_hero2.bullets:
-                bullet.update()
-
         for bullet in  enemy_tank.bullets:
             bullet.update()
         display.update()  # оновлення екрану

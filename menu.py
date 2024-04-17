@@ -20,12 +20,11 @@ play_button = Button('Play', font_tnw, 36, (150, 150, 150), (20, 100, 20),  scre
 game_text = Text('Game:', font_tnw, 36, (255, 255, 255), screen, 350, 20, True)
 settings_button = Button('Settings', font_tnw, 36, (150, 150, 150), (50, 50, 50),  screen, 320, 180, 180, 80, True)
 b_c_text = Text('Battle City', font_b, 48, (255, 255, 255), screen, 270, 20, True)
-num_players_text = Text('Choose the number of players', font_tnw, 36, (255, 255, 255), screen, 200, 180, False)
+
 settings_text = Text('Settings:', font_tnw, 36, (255, 255, 255), screen, 340, 100, False)
-player_num1_button = Button('1', font_tnw, 36, (150, 150, 150), (50, 50, 50),  screen, 280, 250, 80, 80, False)
-player_num2_button = Button('2', font_tnw, 36, (150, 150, 150), (50, 50, 50),  screen, 450, 250, 80, 80, False)
+
 exit_button = Button('Exit', font_tnw, 36, (180, 180, 180), (40, 20, 10),  screen, 320, 420, 180, 80, True)
-select_tank_button = Button('Choose a tank', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 300, 380, 220, 80, False)
+select_tank_button = Button('Choose a tank', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 300, 260, 220, 80, False)
 back_button1 = Button('Back', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 300, 500, 220, 80, False)
 select_level_text = Text("Choose a level", font_tnw, 36, (255, 255, 255), screen, 300, 100, False)
 level1_button = LevelButton('level 1', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 60, 160, 220, 80, False, True)
@@ -35,11 +34,12 @@ level4_button = LevelButton('level 4', font_tnw, 36, (150, 150, 150),  (50, 50, 
 select_tank_text = Text('Choose a tank', font_tnw, 36, (255, 255, 255), screen, 300, 100, False)
 back_button2 = Button('Back', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 300, 500, 220, 80, False)
 back_button3 = Button('Back', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 300, 500, 220, 80, False)
+back_button4 = Button('Back', font_tnw, 36, (150, 150, 150),  (50, 50, 50), screen, 300, 500, 220, 80, False)
 image_tank1 = Image("images/tank_hero.png", 50, 160, 80, 80, False)
 description1 = Text('Speed: 2, Number of shells: 10, armor: 1.', font_tnw, 24, (255, 255, 255), screen, 160, 170, False)
 tank1_button1 = LevelButton("", None, 10, (150, 150, 150),  (50, 50, 50), screen, 600, 150, 80, 80, False, True)
-tank1_button2 = LevelButton("", None, 10, (150, 150, 150),  (50, 50, 50), screen, 700, 150, 80, 80, False, True)
-settings = Settings(1, 1, 1)
+settings = [1, 2]
+loss_text = Text("You lost!", font_b, 48, (255, 255, 255), screen, 300, 220, False)
 def changes(*args):
     for obj in args:
         obj.is_draw = not obj.is_draw
@@ -51,8 +51,6 @@ def main_menu():
             menu_text.draw_text()
         if b_c_text.is_draw == True:
             b_c_text.draw_text()
-        if num_players_text.is_draw == True:
-            num_players_text.draw_text()
         if settings_text.is_draw == True:
             settings_text.draw_text()
         if select_level_text.is_draw == True:
@@ -63,6 +61,8 @@ def main_menu():
             image_tank1.draw(screen)
         if description1.is_draw == True:
             description1.draw_text()
+        if loss_text.is_draw == True:
+            loss_text.draw_text()
         
         mouse_pos = mouse.get_pos()
         if mouse_pos[0] > play_button.x and mouse_pos[0] < play_button.x + play_button.width and mouse_pos[1] > play_button.y and mouse_pos[1] < play_button.y + play_button.height:
@@ -100,6 +100,11 @@ def main_menu():
         else:
             back_button3.change_color((50, 50, 50), (150, 150, 150))
 
+        if mouse_pos[0] > back_button4.x and mouse_pos[0] < back_button4.x + back_button4.width and mouse_pos[1] > back_button4.y and mouse_pos[1] < back_button4.y + back_button4.height:
+            back_button4.change_color((180, 180, 180), (255, 255, 255))
+        else:
+            back_button4.change_color((50, 50, 50), (150, 150, 150))
+
         if mouse_pos[0] > level1_button.x and mouse_pos[0] < level1_button.x + level1_button.width and mouse_pos[1] > level1_button.y and mouse_pos[1] < level1_button.y + level1_button.height and level1_button.is_openly is True:
             level1_button.change_color((180, 180, 180), (255, 255, 255))
         else:
@@ -120,26 +125,14 @@ def main_menu():
         else:
             level4_button.change_color((50, 50, 50), (150, 150, 150))
 
-        if settings.num_players == 1:
-            player_num1_button.change_color((180, 180, 180), (255, 255, 255))
-            player_num2_button.change_color((50, 50, 50), (150, 150, 150))
-        elif settings.num_players == 2:
-            player_num2_button.change_color((180, 180, 180), (255, 255, 255))
-            player_num1_button.change_color((50, 50, 50), (150, 150, 150))
-
-        if settings.tank1 == 1:
+       
+        if settings[0] == 1:
             tank1_button1.change_color((0, 180, 0), (255, 255, 255))
         elif tank1_button1.is_openly is True:
             tank1_button1.change_color((180, 180, 180), (255, 255, 255))
         else:
             tank1_button1.change_color((50, 50, 50), (255, 255, 255))
         
-        if settings.tank2 == 1:
-            tank1_button2.change_color((0, 180, 0), (255, 255, 255))
-        elif tank1_button2.is_openly is True:
-            tank1_button2.change_color((180, 180, 180), (255, 255, 255))
-        else:
-            tank1_button2.change_color((50, 50, 50), (255, 255, 255))
 
 
         if play_button.is_draw == True:
@@ -150,6 +143,13 @@ def main_menu():
             level1_button.draw()
             if level1_button.clicked == True and level1_button.is_openly is True:
                 result = main.game(1, settings)
+                if result is False:
+                    changes(select_level_text, level1_button, level2_button, level3_button, level4_button, back_button3, loss_text, menu_text, back_button4)
+        if back_button4.is_draw == True:
+            back_button4.draw()
+            if back_button4.clicked == True:
+                changes(loss_text, settings_button, play_button, exit_button, back_button4)
+
         if level2_button.is_draw == True:
             level2_button.draw()
             if level2_button.clicked == True and level2_button.is_openly is True:
@@ -165,35 +165,25 @@ def main_menu():
         if tank1_button1.is_draw is True:
             tank1_button1.draw()
             if tank1_button1.clicked == True and tank1_button1.is_openly is True:
-                settings.tank1 = 1
-        if tank1_button2.is_draw is True:
-            tank1_button2.draw()
-            if tank1_button2.clicked == True and tank1_button2.is_openly is True:
-                settings.tank2 = 1
+                settings[0] = 1
+                settings[1] = 2
+    
         if settings_button.is_draw == True:
             settings_button.draw()
             if settings_button.clicked == True:
-                changes(menu_text, settings_button, play_button, num_players_text, settings_text, player_num1_button, player_num2_button, exit_button, select_tank_button, back_button1)
-        if player_num1_button.is_draw == True:
-            player_num1_button.draw()
-            if player_num1_button.clicked == True:
-                settings.num_players = 1 if settings.num_players == 2 else 1
-        if player_num2_button.is_draw == True:
-            player_num2_button.draw()
-            if player_num2_button.clicked == True:
-                settings.num_players = 2 if settings.num_players == 1 else 2
+                changes(menu_text, settings_button, play_button, settings_text, exit_button, select_tank_button, back_button1)
         if select_tank_button.is_draw == True:
             select_tank_button.draw()
             if select_tank_button.clicked == True:
-                changes(num_players_text, settings_text, player_num1_button, player_num2_button, select_tank_button, back_button1, select_tank_text, back_button2, image_tank1, description1, tank1_button1, tank1_button2)
+                changes(settings_text, select_tank_button, back_button1, select_tank_text, back_button2, image_tank1, description1, tank1_button1)
         if back_button1.is_draw == True:
             back_button1.draw()
             if back_button1.clicked == True:
-                changes(menu_text, settings_button, play_button, num_players_text, settings_text, player_num1_button, player_num2_button, exit_button, select_tank_button, back_button1)
+                changes(menu_text, settings_button, play_button,settings_text, exit_button, select_tank_button, back_button1)
         if back_button2.is_draw == True:
             back_button2.draw()
             if back_button2.clicked == True:
-                changes(num_players_text, settings_text, player_num1_button, player_num2_button, select_tank_button, back_button1, select_tank_text, back_button2, image_tank1, description1, tank1_button1, tank1_button2)
+                changes(settings_text, select_tank_button, back_button1, select_tank_text, back_button2, image_tank1, description1, tank1_button1)
         if back_button3.is_draw == True:
             back_button3.draw()
             if back_button3.clicked == True:
@@ -204,6 +194,8 @@ def main_menu():
                 quit()  
                 sys.exit()
         
+
+        
         
         for e in event.get():
             if e.type == QUIT:
@@ -211,8 +203,6 @@ def main_menu():
                 sys.exit()
             play_button.handle_event(e)
             settings_button.handle_event(e)
-            player_num1_button.handle_event(e)
-            player_num2_button.handle_event(e)
             exit_button.handle_event(e)
             select_tank_button.handle_event(e)
             back_button1.handle_event(e)
@@ -222,8 +212,9 @@ def main_menu():
             level4_button.handle_event(e)
             back_button2.handle_event(e)
             back_button3.handle_event(e)
+            back_button4.handle_event(e)
             tank1_button1.handle_event(e)
-            tank1_button2.handle_event(e)
+            
 
         display.update()
 
