@@ -17,8 +17,13 @@ class Tank:
 
 
 
-    def draw(self, window):
-        rotated_tank = transform.rotate(self.image, self.angle)
+    def draw(self, window, tank):
+        if tank == 2:
+            rotated_tank = transform.rotate(self.image, self.angle)
+        elif tank == 1:
+            rotated_tank = transform.rotate(self.image, self.angle)
+        elif tank == 3:
+            rotated_tank = transform.rotate(self.image, self.angle)
         window.blit(rotated_tank, (self.rect.x, self.rect.y))
         for bullet in self.bullets:
             bullet.draw(window)
